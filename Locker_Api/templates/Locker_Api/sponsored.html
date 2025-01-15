@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsored Content</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Center-align the heading and text */
+    .sponsored-section .text-center {
+      text-align: center;
+    }
+
+    /* Styling for the ad image */
+    .ad-banner {
+      max-width: 200px; /* Slightly larger for better emphasis */
+      height: auto;     /* Maintain aspect ratio */
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Ensuring the card looks clean and has some space */
+    .card {
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <div class="sponsored-section my-4">
+      <div class="card bg-light border-0 shadow-sm">
+        <div class="card-body">
+          <!-- Sponsored Label -->
+          <small class="text-muted d-block mb-2">Sponsored</small>
+
+          <!-- Heading and Description Above the Image -->
+          <div class="text-center mb-3">
+            <h5 class="mb-1">Featured Spirit of the Week</h5>
+            <p class="mb-0 text-muted">Discover our premium selection of craft spirits</p>
+          </div>
+
+          <!-- Image and Remaining Content Below -->
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <img src="https://i.ibb.co/S3ShHtF/Woodford-Ad.jpg" alt="Woodford-Ad" class="ad-banner">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

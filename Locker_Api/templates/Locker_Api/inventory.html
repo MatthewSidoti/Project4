@@ -1,0 +1,145 @@
+{% extends 'Locker_Api/base.html' %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2 class="float-start">Inventory</h2>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'add-inventory' %}" class="btn btn-primary float-end">Add New Item</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="search-container">
+            <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-primary text-white">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="searchInput" class="form-control form-control-lg" 
+                       placeholder="Search inventory by name, SKU, or category..." 
+                       style="border-left: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var searchText = this.value.toLowerCase();
+        var table = document.getElementById('inventoryTable');
+        var rows = table.getElementsByTagName('tr');
+    
+        for (var i = 1; i < rows.length; i++) {
+            var show = false;
+            var cells = rows[i].getElementsByTagName('td');
+            for (var j = 0; j < cells.length; j++) {
+                if (cells[j].textContent.toLowerCase().includes(searchText)) {
+                    show = true;
+                    break;
+                }
+            }
+            rows[i].style.display = show ? '' : 'none';
+        }
+    });
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table" id="inventoryTable">
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            {% if request.user.is_superuser %}
+                                <th>Actions</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inventory %}
+                        <tr>
+                            <td>{{ item.product.sku }}</td>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.product.category }}</td>
+                            <td>{{ item.quantity }}</td>
+                            {% if request.user.is_superuser %}
+                                <td>
+                                    <a href="{% url 'edit-inventory' pk=item.id %}" class="btn btn-sm btn-info">Edit</a>
+                                    <a href="{% url 'delete-inventory' pk=item.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="{% if request.user.is_superuser %}5{% else %}4{% endif %}" class="text-center">
+                                No inventory items available.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sponsored Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        {% include 'Locker_Api/sponsored.html' %}
+    </div>
+</div>
+
+<style>
+.search-container {
+    margin: 20px 0;
+    padding: 10px;
+}
+
+#searchInput {
+    border: 2px solid #e9ecef;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    box-shadow: 0 0 15px rgba(0,123,255,0.1);
+    border-color: #80bdff;
+    outline: 0;
+}
+
+.input-group-text {
+    border: none;
+    font-size: 1.2rem;
+    padding: 0 20px;
+}
+
+.sponsored-section {
+    transition: transform 0.2s ease;
+}
+
+.sponsored-section:hover {
+    transform: translateY(-2px);
+}
+
+.sponsored-section .card {
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+}
+
+.sponsored-section small {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.7rem;
+}
+</style>
+
+{% endblock %}

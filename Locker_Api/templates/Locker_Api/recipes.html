@@ -1,0 +1,162 @@
+{% extends 'Locker_Api/base.html' %}
+
+{% block title %}Drink Recipes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Main content -->
+    <div class="col-md-9">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h2 class="float-start">Drink Recipes</h2>
+                <a href="{% url 'add-recipe' %}" class="btn btn-primary float-end">Add New Recipe</a>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="search-container">
+                    <div class="input-group input-group-lg shadow-sm">
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control form-control-lg" 
+                               placeholder="Search recipes by name..." 
+                               style="border-left: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for recipe in recipes %}
+            <div class="col-md-4 mb-4 text-center recipe-item">
+                <a href="{{ recipe.recipe_url }}" target="_blank" class="text-decoration-none">
+                    <div class="recipe-container">
+                        {% if recipe.image %}
+                            <img src="{{ recipe.image.url }}" class="recipe-image" alt="{{ recipe.name }}">
+                        {% else %}
+                            <div class="recipe-image-placeholder">
+                                {{ recipe.name|make_list|first|upper }}
+                            </div>
+                        {% endif %}
+                        <h5 class="mt-3 text-dark">{{ recipe.name }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No recipes available yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sponsored sidebar -->
+    <div class="col-md-3">
+        <div class="sticky-top" style="top: 2rem;">
+            {% include 'Locker_Api/sponsored.html' %}
+        </div>
+    </div>
+</div>
+
+<style>
+.search-container {
+    margin: 20px 0;
+    padding: 10px;
+}
+
+#searchInput {
+    border: 2px solid #e9ecef;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    box-shadow: 0 0 15px rgba(0,123,255,0.1);
+    border-color: #80bdff;
+    outline: 0;
+}
+
+.input-group-text {
+    border: none;
+    font-size: 1.2rem;
+    padding: 0 20px;
+}
+
+.recipe-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.recipe-image, .recipe-image-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.recipe-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    color: white;
+    font-size: 3rem;
+}
+
+.recipe-container:hover {
+    transform: translateY(-5px);
+}
+
+.recipe-container:hover .recipe-image {
+    transform: scale(1.05);
+}
+
+.sponsored-section {
+    transition: transform 0.2s ease;
+}
+
+.sponsored-section:hover {
+    transform: translateY(-2px);
+}
+
+.sponsored-section .card {
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+}
+
+.sponsored-section small {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.7rem;
+}
+
+@media (min-width: 768px) {
+    .sticky-top {
+        position: sticky;
+        top: 20px;
+    }
+}
+</style>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    var searchText = this.value.toLowerCase();
+    var recipes = document.getElementsByClassName('recipe-item');
+
+    for (var i = 0; i < recipes.length; i++) {
+        var recipeName = recipes[i].querySelector('h5').textContent.toLowerCase();
+        if (recipeName.includes(searchText)) {
+            recipes[i].style.display = '';
+        } else {
+            recipes[i].style.display = 'none';
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'Locker_Api/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Inventory Summary</h5>
+            </div>
+            <div class="card-body">
+                <h6>Total Items: {{ inventory_count }}</h6>
+                <h6>Low Stock Items: {{ low_stock_count }}</h6>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_activities %}
+                    <ul class="list-group">
+                    {% for activity in recent_activities %}
+                        <li class="list-group-item">{{ activity }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No recent activity</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
